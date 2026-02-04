@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>For Ingrid – My Valentine</title>
+
+  <style>
+    * { box-sizing: border-box; margin:0; padding:0; }
+
+    body {
+      background: #050505;
+      color: white;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    h1 {
+      font-weight: 600;
+      letter-spacing: .5px;
+    }
+
+    /* HERO */
+    .hero {
+      height: 85vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background: radial-gradient(circle at top, #12091a, #050505 60%);
+    }
+
+    .glass {
+      background: rgba(255,255,255,.07);
+      backdrop-filter: blur(14px);
+      border-radius: 22px;
+      padding: 24px;
+      margin: 10px;
+    }
+
+    .btn {
+      background: white;
+      color: black;
+      border: none;
+      padding: 14px 22px;
+      border-radius: 30px;
+      font-weight: 600;
+      margin-top: 14px;
+    }
+
+    /* CAROUSEL */
+    .carousel {
+      position: relative;
+      max-width: 100%;
+      margin: 30px auto;
+      border-radius: 24px;
+      overflow: hidden;
+    }
+
+    .slides img {
+      width: 100%;
+      display: none;
+    }
+
+    .slides img.active { display: block; }
+
+    .dots {
+      text-align: center;
+      margin-top: 8px;
+    }
+
+    .dot {
+      height: 8px;
+      width: 8px;
+      margin: 3px;
+      background: #666;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .dot.active { background: white; }
+
+    /* MESSAGE */
+    #letter {
+      display: none;
+      line-height: 1.6;
+    }
+
+    /* HEARTS */
+    .heart {
+      position: fixed;
+      bottom: -20px;
+      font-size: 20px;
+      opacity: .8;
+      animation: float 8s linear infinite;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-110vh); }
+    }
+
+    @media(max-width: 700px){
+      .hero{ height: 78vh; }
+      h1{ font-size: 24px; }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="hero">
+  <h1>Ingrid, mi amor</h1>
+  <p>Eight years of you has been the greatest gift of my life.</p>
+
+  <button class="btn" onclick="showLetter()">Open My Heart</button>
+
+  <div id="letter" class="glass">
+    <p>
+      My love, every version of me has loved every version of you.  
+      Through laughs, long nights, dreams we built from nothing,  
+      and now the beautiful family we share — you have been my home.  
+      I still look at you the way I did eight years ago,  
+      except now I love you even deeper.
+    </p>
+
+    <p style="margin-top:10px">
+      Thank you for choosing me, for believing in us,  
+      and for being the most amazing mother and partner.  
+      I don’t need a perfect life — I just need you.
+    </p>
+
+    <p style="margin-top:10px;font-weight:600">
+      Will you be my Valentine, today and always?
+    </p>
+  </div>
+</div>
+
+<div class="container">
+
+  <iframe style="border-radius:12px;width:100%;height:152px" 
+    src="https://open.spotify.com/embed/track/4OyzSXRSadNQt5EMwASdap" 
+    frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
+  </iframe>
+
+  <div class="carousel" id="carousel">
+    <div class="slides">
+      <img class="active" src="photo1.jpg" />
+      <img src="photo2.jpg" />
+      <img src="photo3.jpg" />
+      <img src="photo4.jpg" />
+      <img src="photo5.jpg" />
+    </div>
+
+    <div class="dots">
+      <span class="dot active"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+    </div>
+  </div>
+</div>
+
+<script>
+let index = 0;
+const imgs = document.querySelectorAll('.slides img');
+const dots = document.querySelectorAll('.dot');
+
+function show(i){
+  imgs.forEach(x=>x.classList.remove('active'));
+  dots.forEach(x=>x.classList.remove('active'));
+  imgs[i].classList.add('active');
+  dots[i].classList.add('active');
+}
+
+function next(){ index = (index+1) % imgs.length; show(index); }
+setInterval(next, 5000);
+
+// SWIPE SUPPORT
+let startX = 0;
+const carousel = document.getElementById('carousel');
+
+carousel.addEventListener('touchstart', e=> startX = e.touches[0].clientX);
+
+carousel.addEventListener('touchend', e=>{
+  let diff = startX - e.changedTouches[0].clientX;
+  if(Math.abs(diff) > 40){
+    if(diff > 0) next();
+    else { index = (index-1+imgs.length)%imgs.length; show(index); }
+  }
+});
+
+function showLetter(){
+  document.getElementById('letter').style.display='block';
+  createHearts();
+}
+
+function createHearts(){
+  setInterval(()=>{
+    const h = document.createElement('div');
+    h.className='heart';
+    h.innerText='♥';
+    h.style.left=Math.random()*100+'vw';
+    h.style.fontSize=10+Math.random()*20+'px';
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),8000);
+  },400);
+}
+</script>
+
+</body>
+</html>
